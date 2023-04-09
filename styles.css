@@ -21,7 +21,21 @@ header {
     width: 100%;
     max-width: calc((100vh / 6) * 5 - 37px);
     margin: 10px auto;
-    height: 17px;
+}
+
+.headerRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 {
+    margin: 10px 0;
+}
+
+header p {
+    margin-top: 0;
+    text-align: center;
 }
 
 main {

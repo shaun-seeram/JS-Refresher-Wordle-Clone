@@ -6,13 +6,13 @@ class Wordle {
         this.round = 1;
         this.letterBox = 1;
         this.roundWord = "";
-        this.status = "Playing"
+        this.status = "Playing";
+        this.controller = new AbortController();
 
         try {
             fetch("https://random-word-api.herokuapp.com/word?number=1&length=5").then(d => d.json()).then((jsonData) => {
                 this.word = jsonData[0];
                 this.wordArr = [...jsonData[0]];
-                this.resetBoard();
                 this.startGame();
             })
         } catch (e) {
@@ -30,15 +30,15 @@ class Wordle {
         gameStatus.textContent = this.status;
     }
 
-    resetBoard() {
-        document.querySelectorAll(".letterContainer").forEach((letter) => {
-            letter.textContent = ""
-        })
-    }
-
     startGame() {
-        this.checkStatus();
 
+        document.querySelectorAll(".letterContainer").forEach((letter) => {
+            letter.textContent = "";
+            letter.classList.remove("green");
+            letter.classList.remove("yellow");
+        })
+
+        this.checkStatus();
         window.addEventListener("keypress", (e) => {
             if (this.status === "Playing") {
                 const alpha = "abcdefghijklmnopqrstuvwxyz";
@@ -56,7 +56,7 @@ class Wordle {
                     this.submitGuess();
                 }
             }
-        })
+        }, { signal: this.controller.signal });
     }
 
     submitGuess() {
@@ -87,8 +87,16 @@ const gameStatus = document.querySelector("#status");
 let game = new Wordle();
 
 const resetGame = () => {
+    game.controller.abort();
+    document.activeElement.blur();
     game = new Wordle();
 }
 
+document.querySelector("#newGame").addEventListener("click", (e) => {
+    resetGame()
+});
+
 // Deal with Backspace?
+// Verify words
+// Add localstorage
 // Style
