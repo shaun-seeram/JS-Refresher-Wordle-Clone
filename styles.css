@@ -10,17 +10,22 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 
 html {
     font-size: 62.5%;
+    background: hsla(153, 43%, 92%, 1);
+    background: linear-gradient(0deg, hsla(153, 43%, 92%, 1) 0%, hsla(24, 88%, 65%, 1) 100%, hsla(216, 56%, 16%, 1) 100%);
+    background: -moz-linear-gradient(0deg, hsla(153, 43%, 92%, 1) 0%, hsla(24, 88%, 65%, 1) 100%, hsla(216, 56%, 16%, 1) 100%);
+    background: -webkit-linear-gradient(0deg, hsla(153, 43%, 92%, 1) 0%, hsla(24, 88%, 65%, 1) 100%, hsla(216, 56%, 16%, 1) 100%);
+    font-family: 'Oswald', sans-serif;
 }
 
 body {
     font-size: 1.4rem;
-    background-color: grey;
 }
 
 header {
     width: 100%;
-    max-width: calc((100vh / 6) * 5 - 37px);
+    max-width: calc(((100vh - 89px) / 6) * 5);
     margin: 10px auto;
+    padding: 0 10px;
 }
 
 .headerRow {
@@ -34,19 +39,18 @@ h1 {
 }
 
 header p {
-    margin-top: 0;
+    margin: 0;
     text-align: center;
 }
 
 main {
-    background-color: rgb(58, 58, 58);
     padding: 10px;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     width: 100%;
-    max-width: calc((100vh / 6) * 5 - 37px);
-    height: calc(100vh - 41px);
+    max-width: calc(((100vh - 89px) / 6) * 5);
+    height: calc(100vh - 89px);
     margin: 0 auto;
 }
 
@@ -63,8 +67,8 @@ main {
 }
 
 .letterContainer {
-    width: calc(20% - 8px);
-    background-color: lightblue;
+    width: 20%;
+    background-color: #be7744;
     aspect-ratio: 1;
     display: flex;
     justify-content: center;
@@ -72,42 +76,13 @@ main {
     font-size: 2rem;
     font-weight: 700;
     text-transform: uppercase;
+    border-radius: 10px;
 }
 
 .green {
-    background-color: green !important;
+    background-color: rgb(66, 179, 66) !important;
 }
 
 .yellow {
-    background-color: yellow !important;
+    background-color: rgb(238, 238, 59) !important;
 }
-
-/* .topRow, .bottomRow {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-}
-
-.gameContainer {
-    width: max-content;
-    max-width: calc(50% - 5px);
-    height: 100%;
-    max-height: calc(50vh - 15px);
-    background-color: orange;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-}
-
-.wordContainer {
-    width: 100%;
-    display: flex;
-    gap: 10px;
-}
-
-.letterContainer {
-    width: 20%;
-    aspect-ratio: 1;
-    background-color: purple;
-} */

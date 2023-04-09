@@ -6,7 +6,8 @@ class Wordle {
         this.round = 1;
         this.letterBox = 1;
         this.roundWord = "";
-        this.status = "Playing";
+        this.state = true;
+        this.status = "";
         this.controller = new AbortController();
 
         try {
@@ -22,9 +23,13 @@ class Wordle {
 
     checkStatus() {
         if (this.roundWord === this.word) {
+            this.state = false;
             this.status = "Congrats, you've won!";
         } else if (this.round === 6) {
+            this.state = false;
             this.status = `You lose! The word was ${this.word}`;
+        } else {
+            this.status = `Guess ${this.round}`
         }
 
         gameStatus.textContent = this.status;
@@ -40,7 +45,7 @@ class Wordle {
 
         this.checkStatus();
         window.addEventListener("keypress", (e) => {
-            if (this.status === "Playing") {
+            if (this.state) {
                 const alpha = "abcdefghijklmnopqrstuvwxyz";
                 let key = e.key.toLowerCase();
     
