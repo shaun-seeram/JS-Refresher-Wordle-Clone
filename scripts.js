@@ -44,7 +44,7 @@ class Wordle {
         })
 
         this.checkStatus();
-        window.addEventListener("keypress", (e) => {
+        window.addEventListener("keydown", (e) => {
             if (this.state) {
                 const alpha = "abcdefghijklmnopqrstuvwxyz";
                 let key = e.key.toLowerCase();
@@ -53,11 +53,22 @@ class Wordle {
                     if (this.roundWord.length < 5) {
                         this.roundWord += key;
                         document.querySelector(`.word${this.round}`).querySelector(`.letter${this.letterBox}`).textContent = key;
-                        this.letterBox++
+                        this.letterBox = Math.min(this.letterBox + 1, 5);
+                    }
+                }
+
+                if (key === "backspace") {
+                    if (this.roundWord.length === 5) {
+                        document.querySelector(`.word${this.round}`).querySelector(`.letter${this.letterBox}`).textContent = "";
+                        this.roundWord = this.roundWord.substring(0, this.roundWord.length - 1);
+                    } else if (this.roundWord.length <= 4 && this.roundWord.length > 0) {
+                        this.letterBox--;
+                        document.querySelector(`.word${this.round}`).querySelector(`.letter${this.letterBox}`).textContent = "";
+                        this.roundWord = this.roundWord.substring(0, this.roundWord.length - 1);
                     }
                 }
     
-                if (e.key === "Enter" && this.roundWord.length === 5) {
+                if (key === "enter" && this.roundWord.length === 5) {
                     this.submitGuess();
                 }
             }
@@ -101,7 +112,10 @@ document.querySelector("#newGame").addEventListener("click", (e) => {
     resetGame()
 });
 
-// Deal with Backspace?
 // Verify words
 // Add localstorage
 // Style
+// Add keyboard
+// Add leaderboard?
+// Qwordle
+// Pokemon wordle?
