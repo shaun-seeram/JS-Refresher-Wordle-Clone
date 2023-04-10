@@ -96,9 +96,5 @@ main {
 }
 
 .red .letterContainer {
-    background-color: red !important;
+    background-color: rgb(183, 28, 28) !important;
 }
-
-/* .red {
-    background-color: red !important;
-} */

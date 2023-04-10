@@ -25,7 +25,7 @@ class Wordle {
         if (this.roundWord === this.word) {
             this.state = false;
             this.status = "Congrats, you've won!";
-        } else if (this.round === 6) {
+        } else if (this.round === 7) {
             this.state = false;
             this.status = `You lose! The word was ${this.word}`;
         } else {
@@ -48,6 +48,7 @@ class Wordle {
         })
 
         this.checkStatus();
+
         window.addEventListener("keydown", (e) => {
             if (this.state) {
                 const alpha = "abcdefghijklmnopqrstuvwxyz";
@@ -97,9 +98,8 @@ class Wordle {
         
                 })
         
-                this.checkStatus();
-        
                 this.round++;
+                this.checkStatus();
                 this.letterBox = 1;
                 this.roundWord = "";
             } else {
