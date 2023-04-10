@@ -58,6 +58,8 @@ class Wordle {
                 }
 
                 if (key === "backspace") {
+                    document.querySelector(`.word${this.round}`).classList.remove("red");
+
                     if (this.roundWord.length === 5) {
                         document.querySelector(`.word${this.round}`).querySelector(`.letter${this.letterBox}`).textContent = "";
                         this.roundWord = this.roundWord.substring(0, this.roundWord.length - 1);
@@ -76,24 +78,30 @@ class Wordle {
     }
 
     submitGuess() {
-        [...this.roundWord].forEach((letter, i) => {
-            if (!this.guessedLetters.includes(letter)) {
-                this.guessedLetters.push(letter);
+        fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${this.roundWord}`).then(res => res.json()).then((jsonRes) => {
+            if (jsonRes[0]?.word || this.roundWord === this.word) {
+                [...this.roundWord].forEach((letter, i) => {
+                    if (!this.guessedLetters.includes(letter)) {
+                        this.guessedLetters.push(letter);
+                    }
+        
+                    if (letter === this.wordArr[i]) {
+                        document.querySelector(`.word${this.round}`).querySelector(`.letter${i+1}`).classList.add("green");
+                    } else if (this.wordArr.includes(letter)) {
+                        document.querySelector(`.word${this.round}`).querySelector(`.letter${i+1}`).classList.add("yellow");
+                    }
+        
+                })
+        
+                this.checkStatus();
+        
+                this.round++;
+                this.letterBox = 1;
+                this.roundWord = "";
+            } else {
+                document.querySelector(`.word${this.round}`).classList.add("red");
             }
-
-            if (letter === this.wordArr[i]) {
-                document.querySelector(`.word${this.round}`).querySelector(`.letter${i+1}`).classList.add("green");
-            } else if (this.wordArr.includes(letter)) {
-                document.querySelector(`.word${this.round}`).querySelector(`.letter${i+1}`).classList.add("yellow");
-            }
-
-        })
-
-        this.checkStatus();
-
-        this.round++;
-        this.letterBox = 1;
-        this.roundWord = "";
+        });
     }
 
 }
@@ -112,9 +120,7 @@ document.querySelector("#newGame").addEventListener("click", (e) => {
     resetGame()
 });
 
-// Verify words
 // Add localstorage
-// Style
 // Add keyboard
 // Add leaderboard?
 // Qwordle

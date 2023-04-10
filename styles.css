@@ -94,3 +94,11 @@ main {
 .yellow {
     background-color: rgb(238, 238, 59) !important;
 }
+
+.red .letterContainer {
+    background-color: red !important;
+}
+
+/* .red {
+    background-color: red !important;
+} */
