@@ -107,7 +107,6 @@ class Wordle {
             }
         });
     }
-
 }
 
 const gameStatus = document.querySelector("#status");
