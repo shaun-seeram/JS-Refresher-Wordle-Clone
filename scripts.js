@@ -37,6 +37,10 @@ class Wordle {
 
     startGame() {
 
+        document.querySelectorAll(".wordContainer").forEach((word) => {
+            word.classList.remove("red");
+        })
+
         document.querySelectorAll(".letterContainer").forEach((letter) => {
             letter.textContent = "";
             letter.classList.remove("green");
