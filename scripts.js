@@ -127,4 +127,3 @@ document.querySelector("#newGame").addEventListener("click", (e) => {
 // Add keyboard
 // Add leaderboard?
 // Qwordle
-// Pokemon wordle?
