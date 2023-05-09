@@ -62,7 +62,7 @@ main {
     flex-wrap: wrap;
     gap: 10px;
     width: 100%;
-    max-width: calc(((100vh - 90px) / 6) * 5);
+    max-width: 600px;
     height: calc(100vh - 90px);
     margin: 0 auto;
 }
