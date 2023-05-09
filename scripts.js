@@ -10,15 +10,23 @@ class Wordle {
         this.status = "";
         this.controller = new AbortController();
 
-        try {
-            fetch("https://random-word-api.herokuapp.com/word?number=1&length=5").then(d => d.json()).then((jsonData) => {
-                this.word = jsonData[0];
-                this.wordArr = [...jsonData[0]];
-                this.startGame();
-            })
-        } catch (e) {
-            console.log(e);
+        const initiate = async () => {
+            try {
+                const res = await fetch("https://random-word-api.herokuapp.com/word?number=1&length=5");
+                if (res.status === 200) {
+                    const jsonData = await res.json();
+                    this.word = jsonData[0];
+                    this.wordArr = [...jsonData[0]];
+                    this.startGame();
+                } else {
+                    throw new Error("Status error")
+                }
+            } catch (e) {
+                console.log("ERROR:", e)
+            }
         }
+
+        initiate();
     }
 
     checkStatus() {
