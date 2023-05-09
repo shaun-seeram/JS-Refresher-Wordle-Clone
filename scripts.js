@@ -41,6 +41,12 @@ class Wordle {
             word.classList.remove("red");
         })
 
+        document.querySelectorAll(".key").forEach((key) => {
+            key.classList.remove("green");
+            key.classList.remove("yellow");
+            key.classList.remove("gray");
+        })
+
         document.querySelectorAll(".letterContainer").forEach((letter) => {
             letter.textContent = "";
             letter.classList.remove("green");
@@ -91,9 +97,13 @@ class Wordle {
                     }
         
                     if (letter === this.wordArr[i]) {
+                        document.querySelector(`button[data-key="${letter}"]`).classList.add("green");
                         document.querySelector(`.word${this.round}`).querySelector(`.letter${i+1}`).classList.add("green");
                     } else if (this.wordArr.includes(letter)) {
+                        document.querySelector(`button[data-key="${letter}"]`).classList.add("yellow");
                         document.querySelector(`.word${this.round}`).querySelector(`.letter${i+1}`).classList.add("yellow");
+                    } else {
+                        document.querySelector(`button[data-key="${letter}"]`).classList.add("gray");
                     }
         
                 })
@@ -123,7 +133,19 @@ document.querySelector("#newGame").addEventListener("click", (e) => {
     resetGame()
 });
 
+document.querySelectorAll(".key").forEach((key) => {
+    key.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (key.dataset.key === "delete") {
+            window.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Backspace'}));
+        } else if (key.dataset.key === "enter") {
+            window.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Enter'}));
+        } else {
+            window.dispatchEvent(new KeyboardEvent('keydown', {'key': key.dataset.key}));
+        }
+    })
+})
+
 // Add localstorage
-// Add keyboard
 // Add leaderboard?
 // Qwordle
