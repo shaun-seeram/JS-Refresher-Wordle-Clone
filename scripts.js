@@ -33,14 +33,19 @@ class Wordle {
         if (this.roundWord === this.word) {
             this.state = false;
             this.status = "Congrats, you've won!";
+            streak++;
+            localStorage.setItem("streak", streak);
         } else if (this.round === 7) {
             this.state = false;
             this.status = `You lose! The word was ${this.word}`;
+            streak = 0;
+            localStorage.setItem("streak", 0);
         } else {
             this.status = `Guess ${this.round}`
         }
 
         gameStatus.textContent = this.status;
+        gameStreak.textContent = streak;
     }
 
     startGame() {
@@ -64,9 +69,9 @@ class Wordle {
         this.checkStatus();
 
         window.addEventListener("keydown", (e) => {
+            let key = e.key.toLowerCase();
             if (this.state) {
                 const alpha = "abcdefghijklmnopqrstuvwxyz";
-                let key = e.key.toLowerCase();
     
                 if (alpha.includes(key)) {
                     if (this.roundWord.length < 5) {
@@ -91,6 +96,10 @@ class Wordle {
     
                 if (key === "enter" && this.roundWord.length === 5) {
                     this.submitGuess();
+                }
+            } else {
+                if (key === "enter") {
+                    resetGame();
                 }
             }
         }, { signal: this.controller.signal });
@@ -127,7 +136,10 @@ class Wordle {
     }
 }
 
+let streak = localStorage.getItem("streak") || 0
+
 const gameStatus = document.querySelector("#status");
+const gameStreak = document.querySelector("#streak");
 
 let game = new Wordle();
 
@@ -154,5 +166,4 @@ document.querySelectorAll(".key").forEach((key) => {
     })
 })
 
-// Add localstorage
 // Add leaderboard?
