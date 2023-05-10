@@ -21,6 +21,10 @@ body {
     font-size: 1.4rem;
 }
 
+button {
+    color: #000;
+}
+
 /* Header */
 
 header {
@@ -63,7 +67,8 @@ main {
     gap: 10px;
     width: 100%;
     max-width: calc(((100vh - 90px) / 6) * 5);
-    height: calc(100vh - 90px);
+    /* height: calc(100vh - 90px); */
+    height: calc(100vh - 180px);
     margin: 0 auto;
 }
 
@@ -72,7 +77,8 @@ main {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    height: calc(100% - 170px);
+    /* height: calc(100% - 170px); */
+    height: calc(100% - 160px);
 }
 
 .wordContainer {
@@ -82,7 +88,8 @@ main {
 }
 
 .letterContainer {
-    height: calc((100vh - 330px) / 6);
+    /* height: calc((100vh - 330px) / 6); */
+    height: calc((100vh - 410px) / 6);
     max-width: calc((100vw - 60px) / 5);
     background-color: #be7744;
     aspect-ratio: 1;
@@ -133,4 +140,5 @@ main {
     border: none;
     border-radius: 5px;
     background-color: darkgray;
+    padding: 0;
 }

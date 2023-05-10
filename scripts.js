@@ -156,4 +156,3 @@ document.querySelectorAll(".key").forEach((key) => {
 
 // Add localstorage
 // Add leaderboard?
-// Qwordle
