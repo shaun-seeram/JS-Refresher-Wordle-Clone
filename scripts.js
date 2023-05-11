@@ -1,3 +1,10 @@
+const wordContainers = document.querySelectorAll(".wordContainer");
+const keyboardKeys = document.querySelectorAll(".key");
+const letterContainers = document.querySelectorAll(".letterContainer");
+const gameStatus = document.querySelector("#status");
+const gameStreak = document.querySelector("#streak");
+const newGame = document.querySelector("#newGame");
+
 class Wordle {
     constructor() {
         this.word = "";
@@ -6,7 +13,7 @@ class Wordle {
         this.round = 1;
         this.letterBox = 1;
         this.roundWord = "";
-        this.state = true;
+        this.state = true; // If game is currently in play
         this.status = "";
         this.controller = new AbortController();
 
@@ -19,48 +26,29 @@ class Wordle {
                     this.wordArr = [...jsonData[0]];
                     this.startGame();
                 } else {
-                    throw new Error("Status error")
+                    throw new Error("Status error");
                 }
             } catch (e) {
-                console.log("ERROR:", e)
+                console.log("ERROR:", e);
             }
         }
 
         initiate();
     }
 
-    checkStatus() {
-        if (this.roundWord === this.word) {
-            this.state = false;
-            this.status = "Congrats, you've won!";
-            streak++;
-            localStorage.setItem("streak", streak);
-        } else if (this.round === 7) {
-            this.state = false;
-            this.status = `You lose! The word was ${this.word}`;
-            streak = 0;
-            localStorage.setItem("streak", 0);
-        } else {
-            this.status = `Guess ${this.round}`
-        }
-
-        gameStatus.textContent = this.status;
-        gameStreak.textContent = streak;
-    }
-
     startGame() {
 
-        document.querySelectorAll(".wordContainer").forEach((word) => {
+        wordContainers.forEach((word) => {
             word.classList.remove("red");
         })
 
-        document.querySelectorAll(".key").forEach((key) => {
+        keyboardKeys.forEach((key) => {
             key.classList.remove("green");
             key.classList.remove("yellow");
             key.classList.remove("gray");
         })
 
-        document.querySelectorAll(".letterContainer").forEach((letter) => {
+        letterContainers.forEach((letter) => {
             letter.textContent = "";
             letter.classList.remove("green");
             letter.classList.remove("yellow");
@@ -104,10 +92,30 @@ class Wordle {
             }
         }, { signal: this.controller.signal });
     }
+    
+    checkStatus() {
+        if (this.roundWord === this.word) {
+            this.state = false;
+            this.status = "Congrats, you've won!";
+            streak++;
+            localStorage.setItem("streak", streak);
+        } else if (this.round === 7) {
+            this.state = false;
+            this.status = `You lose! The word was ${this.word}`;
+            streak = 0;
+            localStorage.setItem("streak", 0);
+        } else {
+            this.status = `Guess ${this.round}`
+        }
 
-    submitGuess() {
-        fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${this.roundWord}`).then(res => res.json()).then((jsonRes) => {
-            if (jsonRes[0]?.word || this.roundWord === this.word) {
+        gameStatus.textContent = this.status;
+        gameStreak.textContent = streak;
+    }
+
+    async submitGuess() {
+        try {
+            const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${this.roundWord}`);
+            if (res.ok || this.roundWord === this.word) {
                 [...this.roundWord].forEach((letter, i) => {
                     if (!this.guessedLetters.includes(letter)) {
                         this.guessedLetters.push(letter);
@@ -122,38 +130,41 @@ class Wordle {
                     } else {
                         document.querySelector(`button[data-key="${letter}"]`).classList.add("gray");
                     }
-        
                 })
-        
                 this.round++;
                 this.checkStatus();
                 this.letterBox = 1;
                 this.roundWord = "";
             } else {
-                document.querySelector(`.word${this.round}`).classList.add("red");
+                throw new Error;
             }
-        });
+        } catch (e) {
+            document.querySelector(`.word${this.round}`).classList.add("red");
+        }
     }
 }
 
 let streak = localStorage.getItem("streak") || 0
 
-const gameStatus = document.querySelector("#status");
-const gameStreak = document.querySelector("#streak");
-
 let game = new Wordle();
 
 const resetGame = () => {
+
+    if (game.round < 7 && game.state) {
+        streak = 0;
+        localStorage.setItem("streak", 0);
+    }
+
     game.controller.abort();
     document.activeElement.blur();
     game = new Wordle();
 }
 
-document.querySelector("#newGame").addEventListener("click", (e) => {
+newGame.addEventListener("click", (e) => {
     resetGame()
 });
 
-document.querySelectorAll(".key").forEach((key) => {
+keyboardKeys.forEach((key) => {
     key.addEventListener("click", (e) => {
         e.preventDefault();
         if (key.dataset.key === "delete") {
@@ -165,5 +176,3 @@ document.querySelectorAll(".key").forEach((key) => {
         }
     })
 })
-
-// Add leaderboard?
